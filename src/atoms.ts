@@ -217,4 +217,49 @@ export const reRender2State = atom({
     key: 'reRender2State',
     default: false,
 });
+export const messagesState = atom({
+    key: 'messagesState',
+    default: [],
+});
+export const activeRoomState = atom({
+    key: 'activeRoomState',
+    default: null,
+});
+export const groupArr = atom({
+    key: 'groupArr',
+    default: [],
+});
+export const imgPrevState = atom({
+    key: 'imgPrev',
+    default: null,
+});
+export const typeVisState = atom({
+    key: 'typeVisState',
+    default: false,
+});
+export const messageLoading = atom({
+    key: 'messageLoading',
+    default: true,
+});
+export const chatsLoadingState = atom({
+    key: 'chatsLoading',
+    default: true,
+});
+export const roomNameState = atom({
+    key: 'roomNameState',
+    default: '',
+});
+export const showRoomNameChangeModalState = atom({
+    key: 'showRoomNameChangeModalState',
+    default: false,
+});
+export const finalRoomNameState = atom({
+    key: 'finalRoomNameState',
+    default: '',
+});
+export const updateProfileState = atom({
+    key: 'updateProfileState',
+    default: false,
+});
+
 

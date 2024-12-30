@@ -6,32 +6,50 @@ import { placeholderEmailState, placeholderPasswordState, targetSectionState, us
 import { backend } from '../backendString';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import Globe from '@/components/globe';
+import { Label } from "../components/ui/label";
+import { Input } from "../components/ui/input";
+import { cn } from "@/lib/utils";
+import AcUnitIcon from '@mui/icons-material/AcUnit';
+import { motion } from 'framer-motion';
+
+
+
+
+
 
 function Home() {
   const isSignedIn = useRecoilValue(isSignedInState)
   return (
-    <div>
-      <div className='mt-44 relative'>
-        {!(isSignedIn) && <LogComponent />}
+    <div className=' w-[100vw] h-screen flex bg-black'>
+      <div className='w-1/2 flex items-center'>
+        <div className='w-full'>
+        <SignupFormDemo/>
+          
+        </div>
       </div>
-
-      <div className='bottom-80 flex justify-center'>
+      <div className='w-1/2'>
+        <div>
+          {<Globe/>}
+        </div>
       </div>
     </div>
   )
   
 }
 
-function LogComponent() {
+function SignupFormDemo() {
   const setIsSignedUp = useSetRecoilState(isSignedUpState);
   const [signUpFormData, setSignUpFormData] = useRecoilState(signUpFormDataState);
   const [signInFormData, setSignInFormData] = useRecoilState(signInFormDataState);
   const setIsSignedIn = useSetRecoilState(isSignedInState);
+  const isSignedIn = useRecoilValue(isSignedInState)
   const [checkVar, setCheckVar] = useRecoilState(checkVarState);
   const setNameOfUser = useSetRecoilState(nameOfUserState);
   const navigate = useNavigate();
   const [inup, setInup] = useRecoilState(inUpState);
   const setUsername = useSetRecoilState(placeholderUsernameState);
+  const username = useRecoilValue(placeholderUsernameState)
   const setEmail = useSetRecoilState(placeholderEmailState);
   const setPassword = useSetRecoilState(placeholderPasswordState);
   const setUserpfp = useSetRecoilState(userpfpState);
@@ -120,12 +138,14 @@ function LogComponent() {
         }
 
         // Fetching all the data
+        
         setNameOfUser(response.data.nameOfUser);
         setUsername(response.data.username);
         setPassword(response.data.password);
         setEmail(response.data.email);
         setUserpfp(response.data.userpfp);
         setIsSignedIn(true);
+        console.log("hi")
         localStorage.setItem("token", response.data.token);
         setToken(response.data.token)
         
@@ -137,7 +157,7 @@ function LogComponent() {
         } else if (checkVar === "direct2") {
           navigate("/ViewBlogs");
         } else {
-          navigate("/");
+          navigate("/Chat");
         }
         console.log("Toasting...")
         setTimeout(() => {
@@ -167,98 +187,153 @@ function LogComponent() {
       console.log(signInFormData);
     }
   };
-
+  
   return (
-    <div id="mySection" className="w-full max-w-md mx-auto px-4 sm:px-0">
-      <div className="bg-white/20 backdrop-blur-xl border border-white/30 shadow-lg rounded-xl px-6 sm:px-8 pt-6 pb-8 mb-4 w-full">
-        <div className="mb-6">
-          {inup ? (
-            <form onSubmit={handleSignIn} className="space-y-4">
-              <h2 className="text-xl sm:text-2xl font-bold text-center text-gray-800 mb-4">
-                Sign In
-              </h2>
-              <div>
-                <input 
-                  className="w-full px-3 py-2 text-sm sm:text-base bg-white/90 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  onChange={handleSignInChange} 
-                  type="email" 
-                  placeholder="Enter Your Email" 
-                  name="email"
-                  required
-                /> 
-              </div>
-              <div>
-                <input 
-                  className="w-full px-3 py-2 text-sm sm:text-base bg-white/90 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  onChange={handleSignInChange} 
-                  type="password" 
-                  placeholder="Enter Your Password" 
-                  name="password"
-                  required
-                />
-              </div>
-              <button 
-                type="submit" 
-                className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300 text-sm sm:text-base"
-              >
-                Sign In
-              </button>
-            </form>
-          ) : (
-            <form onSubmit={handleSignUp} className="space-y-4">
-              <h2 className="text-xl sm:text-2xl font-bold text-center text-gray-800 mb-4">
-                Sign Up
-              </h2>
-              <div>
-                <input 
-                  className="w-full px-3 py-2 text-sm sm:text-base bg-white/90 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  onChange={handleSignUpChange} 
-                  type="text" 
-                  placeholder="Enter Your Name" 
-                  name="username"
-                  required
-                />
-              </div>
-              <div>
-                <input 
-                  className="w-full px-3 py-2 text-sm sm:text-base bg-white/90 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  onChange={handleSignUpChange} 
-                  type="email" 
-                  placeholder="Enter Your Email" 
-                  name="email"
-                  required
-                /> 
-              </div>
-              <div>
-                <input 
-                  className="w-full px-3 py-2 text-sm sm:text-base bg-white/90 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  onChange={handleSignUpChange} 
-                  type="password" 
-                  placeholder="Enter Your Password" 
-                  name="password"
-                  required
-                />
-              </div>
-              <button 
-                type="submit" 
-                className="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 transition duration-300 text-sm sm:text-base"
-              >
-                Sign Up
-              </button>
-            </form>
-          )}
-        </div>
-        <div className="text-center">
-          <button 
-            onClick={toggleInup} 
-            className="text-blue-500 hover:text-blue-700 text-xs sm:text-sm"
-          >
-            {inup ? "Back to Sign Up" : "Already have an account? Sign In"}
-          </button>
-        </div>
+    <div> 
+      
+      
+      {
+      inup ? <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-black dark:bg-black">
+      <PebbleWrapper/>
+      <p className="text-white text-sm max-w-sm mt-2 dark:text-neutral-300">
+        Login to ChatMon if you can because we don&apos;t have a login flow
+        yet
+      </p>
+
+      <form className="my-8" onSubmit={handleSignIn}>
+        {/* <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
+          <LabelInputContainer>
+            <Label htmlFor="firstname" className="text-white">First name</Label>
+            <Input id="firstname" placeholder="Tyler" type="text" />
+          </LabelInputContainer>
+          
+        </div> */}
+        <LabelInputContainer className="mb-4">
+          <Label htmlFor="email" className="text-white">Email Address</Label>
+          <Input id="email" placeholder="projectmayhem@fc.com" name="email" onChange={handleSignInChange}  type="email" />
+        </LabelInputContainer>
+        <LabelInputContainer className="mb-4">
+          <Label htmlFor="password" className="text-white">Password</Label>
+          <Input id="password" onChange={handleSignInChange} name="password" placeholder="••••••••" type="password" />
+        </LabelInputContainer>
+        
+
+        <button
+          className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
+          type="submit"
+        >
+          Sign in &rarr;
+          <BottomGradient />
+        </button>
+
+        <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
+
+        
+      </form>
+    </div> : 
+    <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-black dark:bg-black">
+    <PebbleWrapper/>
+    <p className="text-white text-sm max-w-sm mt-2 dark:text-neutral-300">
+      Login to ChatMon if you can because we don&apos;t have a login flow
+      yet
+    </p>
+
+    <form className="my-8" onSubmit={handleSignUp}>
+      <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
+        <LabelInputContainer>
+          <Label htmlFor="firstname" className="text-white">Your Name</Label>
+          <Input id="firstname" placeholder="Enter your name" name="username" onChange={handleSignUpChange} required type="text" />
+        </LabelInputContainer>
+        
+      </div>
+      <LabelInputContainer className="mb-4">
+        <Label htmlFor="email" className="text-white">Email Address</Label>
+        <Input onChange={handleSignUpChange}  id="email" placeholder="Enter Your Email" name="email" type="email" />
+      </LabelInputContainer>
+      <LabelInputContainer className="mb-4">
+        <Label htmlFor="password" className="text-white">Password</Label>
+        <Input id="password" onChange={handleSignUpChange} name="password" placeholder="••••••••" type="password" />
+      </LabelInputContainer>
+      
+
+      <button
+        className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
+        type="submit"
+      >
+        Sign up &rarr;
+        <BottomGradient />
+      </button>
+
+      <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
+
+        
+      </form>
+    </div>
+    }
+
+      
+      
+      <div className="text-center">
+            <button 
+              onClick={toggleInup} 
+              className="text-blue-500 hover:text-blue-700 text-xs sm:text-sm"
+            >
+              {inup ? "Back to Sign Up" : "Already have an account? Sign In"}
+            </button>
       </div>
     </div>
   );
 }
 
+const BottomGradient = () => {
+  return (
+    <>
+      <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
+      <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
+    </>
+  );
+};
+
+const LabelInputContainer = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
+  return (
+    <div className={cn("flex flex-col space-y-2 w-full", className)}>
+      {children}
+    </div>
+  );
+};
+
+
+const PebbleWrapper = () => {
+  return (
+    <div className='flex items-center justify-center'>
+      <div className="h-20 flex-col rounded-xl flex justify-center items-center">
+        <motion.div
+          animate={{
+            y: [5, -5, 5], // Float up and down
+            
+          }}
+          transition={{
+            duration: 3,
+            ease: "easeInOut",
+            repeat: Infinity,
+          }}
+        >
+          <AcUnitIcon style={{ fontSize: 60, color: "lightblue" }} />
+        </motion.div>
+      </div>
+      <div className='text-3xl font-lexend'>Chatmon</div>
+    </div>
+  );
+};
+
+
 export default Home
+
+
+

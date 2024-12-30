@@ -1,88 +1,139 @@
-import { useRecoilState, useRecoilValue } from "recoil"
-import { callGetFuncState, noMessage, placeholderUsernameState, reRender2State, roomForMessagesState, roomMessState, sendReRenderState, tempChatState, tokenState } from "../atoms"
-import axios from "axios"
-import { backend } from "../backendString"
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+    callGetFuncState,
+    messageLoading,
+    messagesState,
+    noMessage,
+    placeholderUsernameState,
+    reRender2State,
+    roomForMessagesState,
+    roomMessState,
+    sendReRenderState,
+    tempChatState,
+    tokenState,
+    userpfpState,
+} from "../atoms";
+import axios from "axios";
+import { backend } from "../backendString";
+import { useEffect, useRef } from "react";
+import { Avatar } from "@mui/material";
 
 export const GetMessages = () => {
-    const roomForMessages = useRecoilValue(roomForMessagesState)
-    const token = useRecoilValue(tokenState)
-    const [callGetFunc, setCallGetFunc] = useRecoilState(callGetFuncState)
-    const [roomMess, setRoomMess] = useRecoilState(roomMessState)
-    const username = useRecoilValue(placeholderUsernameState)
-    const [reRender, setReRender] = useRecoilState(sendReRenderState)
-    const temp = useRecoilValue(tempChatState)
-    const no = useRecoilValue(noMessage)
-    const [reRender2, setReRender2] = useRecoilState(reRender2State)
+    const [roomForMessages, setRoomForMessages] = useRecoilState(roomForMessagesState);
+    const token = useRecoilValue(tokenState);
+    const [callGetFunc, setCallGetFunc] = useRecoilState(callGetFuncState);
+    const [roomMess, setRoomMess] = useRecoilState(roomMessState);
+    const userpfp = useRecoilValue(userpfpState)
+    const username = useRecoilValue(placeholderUsernameState);
+    const [reRender, setReRender] = useRecoilState(sendReRenderState);
+    const temp = useRecoilValue(tempChatState);
+    const no = useRecoilValue(noMessage);
+    const [reRender2, setReRender2] = useRecoilState(reRender2State);
+    const [messages, setMessages] = useRecoilState(messagesState);
+    const [messLoading, setMessLoading] = useRecoilState(messageLoading);
+    const chatEndRef = useRef<HTMLDivElement | null>(null);
+
     const getting = async () => {
-        console.log("in getting function")
-        try { // @ts-ignore
-            const response = await axios.post(`${backend}/user/myMessages`, {
-                roomID: roomForMessages
-            }, {
-                headers: {
-                    Authorization: `${token}`,
-                    "Content-Type": "application/json",
+        try {
+            const response = await axios.post(
+                `${backend}/user/myMessages`,
+                {
+                    roomID: roomForMessages,
+                },
+                {
+                    headers: {
+                        Authorization: `${token}`,
+                        "Content-Type": "application/json",
+                    },
                 }
-            })
+            );
 
-            if(response){
-                console.log("Getting function response: ", response.data)
-                setRoomMess(response.data.messages)
+            if (response) {
+                setMessages(response.data.messages);
+                setMessLoading(false);
             } else {
-                console.log("Response not found!")
+                console.log("Response not found!");
             }
-
         } catch (error) {
-            console.log("Error: ", error)
-        } finally {
-            setCallGetFunc(false)
-            setReRender(false)
-            setReRender2(false)
+            console.log("Error: ", error);
         }
-    }
-    if(callGetFunc || reRender || reRender2){
-        getting()
-    } else {
-        console.log("Call get function not triggered", callGetFunc)
-    }
-    // onClick send, the message should be send rendered dynamically, plus should be saved in the db
-    //
-    const user = temp.username; // try using individual atoms for each
-    const { roomID, message } = temp;
-    
-    return(
-        <div>
-            
-            {
-                roomMess.map((m: any) => (
-                    <div key={m._id} className={`chat ${m.sender === username ? 'chat-end' : 'chat-start'}`}>
+    };
+
+    const scrollToBottom = () => {
+        chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    useEffect(() => {
+        getting();
+    }, [roomForMessages]);
+
+    useEffect(() => {
+        if (!messLoading) {  
+            scrollToBottom();
+        }
+    }, [messages]);  
+
+    const loadingArray = [" ", " ", " ", " ", " ", " ", " "];
+
+    return (
+        <div className="overflow-y-auto h-[80vh]">
+            {messLoading ? (
+                loadingArray.map((_, index) => (
+                    <div
+                        key={index}
+                        className={`chat ${
+                            index % 2 === 0 ? "chat-end mr-5" : "chat-start ml-5"
+                        } relative`}
+                    >
+                        
                         <div className="chat-image avatar">
                             <div className="w-10 rounded-full">
-                            <img
-                                alt="Tailwind CSS chat bubble component"
-                                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                                <Avatar src="/broken-image.jpg"/>
                             </div>
                         </div>
-                    <div className="chat-bubble">{m.message}</div>
+                      
+                        <div className="chat-bubble flex-col">
+                            <div className="skeleton h-14 w-64" />
+                        </div>
                     </div>
                 ))
-            }
-
-            <div>
-                {no ? <div key={roomID} className={`chat ${user === username ? 'chat-end' : 'chat-start'}`}>
+            ) : (
+                <>
+                    {messages.map((m: any) => (
+                        <div
+                            key={m._id}
+                            className={`chat ${
+                                m.sender === username ? "chat-end mr-5" : "chat-start ml-5"
+                            } relative`}
+                        >
+                          
+                            {!(m.sender === username) && (
+                                <div className="ml-2 chat-header text-xs">{m.sender}</div>
+                            )}
                             <div className="chat-image avatar">
                                 <div className="w-10 rounded-full">
-                                <img
-                                    alt="Tailwind CSS chat bubble component"
-                                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                                <Avatar src={userpfp ? userpfp : '/default-image.jpg'}/>
                                 </div>
                             </div>
-                        <div className="chat-bubble">{message}</div>
-                </div> : <div></div>}
-            </div> 
-
+                            <div className="chat-bubble bg-slate-700 flex-col">
+                                {m.imgUrl && (
+                                    <a href={m.imgUrl}>
+                                        <div className="p-4">
+                                            <img
+                                                src={m.imgUrl}
+                                                alt="imgHere"
+                                                className="object-cover h-14"
+                                            />
+                                        </div>
+                                    </a>
+                                )}
+                                {m.message && <div>{m.message}</div>}
+                            </div>
+                        </div>
+                    ))}
+                    <div ref={chatEndRef} />
+                </>
+            )}
         </div>
-    )
-
-}
-
+    );
+};
