@@ -111,9 +111,13 @@ export const GetMessages = () => {
                                 <div className="ml-2 chat-header text-xs">{m.sender}</div>
                             )}
                             <div className="chat-image avatar">
+                                {m.sender === username ? 
                                 <div className="w-10 rounded-full">
                                 <Avatar src={userpfp ? userpfp : '/default-image.jpg'}/>
+                                </div> : <div className="w-10 rounded-full">
+                                <Avatar src={'/default-image.jpg'}/>
                                 </div>
+                                }
                             </div>
                             <div className="chat-bubble bg-slate-700 flex-col">
                                 {m.imgUrl && (

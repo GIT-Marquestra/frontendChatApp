@@ -234,12 +234,12 @@ const Chat = () => {
     </li>
     <li className="mx-6">
     {(isSignedIn || isSignedUp) && 
-        <li className="flex">
+        <div className="flex">
             <button onClick={handleProfileUp} className="btn btn-ghost">Hi {username}</button>
             
             <Avatar src={userpfp ? userpfp : '/default-image.jpg'}/>
             
-        </li>
+        </div>
     }
     </li>
     
@@ -560,6 +560,7 @@ const ProfileUpModal = () => {
     const pfpFileRef = useRef()
     const urlRef = useRef('')
     const [image, setImage] = useRecoilState(imageState)
+    const userpfp = useRecoilValue(userpfpState)
     const setUpdateProfile = useSetRecoilState(updateProfileState)
     const showNote = () => {
         const modal = document.getElementById('my_modal_4') as HTMLDialogElement;
@@ -659,7 +660,7 @@ const ProfileUpModal = () => {
                     {/* @ts-ignore */}
                     <input ref={pfpFileRef} onChange={handlePfpUpload} type="file" className="hidden ml-2"/>
                     {/* @ts-ignore */}
-                    <button type="button" onClick={()=>{pfpFileRef.current?.click()}} className="button btn btn-circle"><Avatar src="/broken-image.jpg"/></button>
+                    <button type="button" onClick={()=>{pfpFileRef.current?.click()}} className="button btn btn-circle"><Avatar src={userpfp ? userpfp : `/broken-image.jpg`}/></button>
                     <input onChange={handleInputChange} type="text" className="input m-2 w-2/3 input-bordered" placeholder={username} name="username"/>
                     <input onChange={handleInputChange} type="email" className="input m-2 w-2/3 input-bordered" placeholder={email} name="email"/>
                     <input onChange={handleInputChange} type="password" className="input m-2 w-2/3 input-bordered" placeholder={password} name="password"/>

@@ -50,7 +50,7 @@ export const useWebSocket = () => {
             console.log("WebSocket disconnected!")
         }
     }, [activeRoom, setActiveRoom, setMessages])
-
+    
     const createRoom = (roomID: string, targetUser: string[]) => {
         console.log("Yassu di balle, in createRoom function")
         if(socketRef.current?.readyState === WebSocket.OPEN){
@@ -100,7 +100,7 @@ export const useWebSocket = () => {
             }))
         }
     }
-
+    
     return { sendNothing, sendMessage, createRoom, messages, activeRoom }
 
 }
