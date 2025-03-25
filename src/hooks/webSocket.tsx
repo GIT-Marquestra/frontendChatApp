@@ -21,8 +21,7 @@ export const useWebSocket = () => {
                 }
             }))
         }
-
-        socket.onmessage = (me: any) => {
+        socket.onmessage = (me) => {
             const m = JSON.parse(me.data)
             const { type, payload, messageObject } = m;
             const { roomID, text } = payload
