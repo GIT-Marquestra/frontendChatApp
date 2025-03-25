@@ -330,7 +330,6 @@ const PebbleWrapper = () => {
     );
   };
   
-
 const GetChats = () => {
     const myChats = useRecoilValue(myChatsState)
     const setRoomForMessages = useSetRecoilState(roomForMessagesState)
@@ -368,41 +367,6 @@ const GetChats = () => {
         </div>
     )
 }
-// @ts-ignore
-const Note = () => {
-
-   const noChatsOverlay = useRecoilValue(noChatsOverlayState)
-   const setNoChatsOverlay = useSetRecoilState(noChatsOverlayState)
-    const showNote = () => {
-        const modal = document.getElementById('my_modal_1') as HTMLDialogElement;
-        modal?.showModal();
-    }
-    if(noChatsOverlay){
-        showNote()
-    }
-
-    const handleClose = () => {
-        setNoChatsOverlay(false)
-    }
-
-    return (
-        <div>
-            <dialog id="my_modal_1" className="modal">
-                <div className="modal-box">
-                    <h3 className="font-bold text-lg">Looks like you don't have any chats yet!</h3>
-                    <p className="py-4">Find someone to chat with!</p>
-                    <div className="modal-action">
-                        <form method="dialog">
-                            {/* if there is a button in form, it will close the modal */}
-                            <button className="btn m-2">Find</button>
-                            <button onClick={handleClose} className="btn m-2">Close</button>
-                        </form>
-                    </div>
-                </div>
-            </dialog>
-        </div>
-    );
-};
 const NewChat = () => {
     const showNewChat = useRecoilValue(showNewChatNoteState)
     const roomID = useRecoilValue(roomIDstate)
@@ -673,7 +637,5 @@ const Welcome = () => {
         </div>
     )
 }
-
-
 
 export default Chat
