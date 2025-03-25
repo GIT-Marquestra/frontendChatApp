@@ -8,7 +8,6 @@ import {
     userpfpState,
 } from "../atoms";
 import axios from "axios";
-import { backend } from "../backendString";
 import { useEffect, useRef } from "react";
 import { Avatar } from "@mui/material";
 
@@ -24,7 +23,7 @@ export const GetMessages = () => {
     const getting = async () => {
         try {
             const response = await axios.post(
-                `${backend}/user/myMessages`,
+                `${process.env.BACKEND_STRING}/user/myMessages`,
                 {
                     roomID: roomForMessages,
                 },

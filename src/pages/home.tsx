@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { checkVarState, inUpState, isSignedInState, isSignedUpState, nameOfUserState, placeholderUsernameState, showNavState, signInFormDataState, signUpFormDataState, tokenState } from '../atoms';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { placeholderEmailState, placeholderPasswordState, targetSectionState, userpfpState } from '../atoms';
-import { backend } from '../backendString';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import Globe from '@/components/globe';
@@ -84,7 +83,7 @@ function SignupFormDemo() {
     e.preventDefault();
     if (signUpFormData) {
       try {
-        const response = await axios.post(`${backend}/user/signup`, signUpFormData);
+        const response = await axios.post(`${process.env.BACKEND_STRING}/user/signup`, signUpFormData);
         if (response.status === 201) {
           toast.success("User Signed Up", {
             position: "bottom-right",
@@ -122,7 +121,7 @@ function SignupFormDemo() {
     
     if (signInFormData) {
       try {
-        const response = await axios.post(`${backend}/user/signin`, signInFormData);
+        const response = await axios.post(`${process.env.BACKEND_STRING}/user/signin`, signInFormData);
         console.log("Response", response);
         
         if (response.data.message === "Incorrect Credentials!") {

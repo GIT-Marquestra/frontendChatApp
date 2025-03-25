@@ -5,7 +5,6 @@ import { GetMessages } from "../components/getMessages"
 import { useWebSocket } from "../hooks/webSocket"
 import axios from "axios"
 import { useEffect, useRef, useState } from "react"
-import { backend } from "../backendString"
 import { Image } from "lucide-react"
 import { FlipWords } from "@/components/ui/flip-words"
 import AcUnitIcon from '@mui/icons-material/AcUnit';
@@ -117,7 +116,7 @@ const Chat = () => {
           
         const getMyChatsFunc = async () => {
             try {
-                const response = await axios.get(`${backend}/user/myChats`, {
+                const response = await axios.get(`${process.env.BACKEND_STRING}/user/myChats`, {
                     headers: {
                         Authorization: `${token}`,
                         "Content-Type": "application/json",
@@ -150,7 +149,7 @@ const Chat = () => {
     const deleteImage = async (publicId: string) => {
         
         try {
-            const response = await axios.post(`${backend}/user/deleteImg`, publicId)
+            const response = await axios.post(`${process.env.BACKEND_STRING}/user/deleteImg`, publicId)
             console.log("Deletion result: ", response)
         } catch (error) {
             console.log("Error while deletion: ", error)
@@ -451,7 +450,7 @@ const RoomChangeModal = () => {
         console.log(username)
         
         try {
-            const response = await axios.put(`${backend}/user/changeRoomName`, {
+            const response = await axios.put(`${process.env.BACKEND_STRING}/user/changeRoomName`, {
                 roomID: p,
                 roomName: q,
                 username: r,
@@ -567,7 +566,7 @@ const ProfileUpModal = () => {
                 ...upForm,
                 userpfp: urlRef.current
             }
-            const response = await axios.put(`${backend}/user/updatePfp`, payload, {
+            const response = await axios.put(`${process.env.BACKEND_STRING}/user/updatePfp`, payload, {
                 headers: {
                     Authorization: `${token}`,
                     "Content-Type": "application/json",
