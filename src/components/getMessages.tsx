@@ -10,6 +10,7 @@ import {
 import axios from "axios";
 import { useEffect, useRef } from "react";
 import { Avatar } from "@mui/material";
+import { backendString } from "@/variables";
 
 export const GetMessages = () => {
     const roomForMessages = useRecoilValue(roomForMessagesState);
@@ -23,7 +24,7 @@ export const GetMessages = () => {
     const getting = async () => {
         try {
             const response = await axios.post(
-                `${process.env.BACKEND_STRING}/user/myMessages`,
+                `${backendString}/user/myMessages`,
                 {
                     roomID: roomForMessages,
                 },

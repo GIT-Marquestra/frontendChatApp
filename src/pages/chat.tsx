@@ -11,6 +11,8 @@ import AcUnitIcon from '@mui/icons-material/AcUnit';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { motion } from 'framer-motion';
 import { Avatar } from "@mui/material"
+import { backendString } from "@/variables"
+
 
 const Chat = () => {
     const setShowNewChat = useSetRecoilState(showNewChatNoteState)
@@ -116,7 +118,7 @@ const Chat = () => {
           
         const getMyChatsFunc = async () => {
             try {
-                const response = await axios.get(`${process.env.BACKEND_STRING}/user/myChats`, {
+                const response = await axios.get(`${backendString}/user/myChats`, {
                     headers: {
                         Authorization: `${token}`,
                         "Content-Type": "application/json",
@@ -149,7 +151,7 @@ const Chat = () => {
     const deleteImage = async (publicId: string) => {
         
         try {
-            const response = await axios.post(`${process.env.BACKEND_STRING}/user/deleteImg`, publicId)
+            const response = await axios.post(`${backendString}/user/deleteImg`, publicId)
             console.log("Deletion result: ", response)
         } catch (error) {
             console.log("Error while deletion: ", error)
@@ -450,7 +452,7 @@ const RoomChangeModal = () => {
         console.log(username)
         
         try {
-            const response = await axios.put(`${process.env.BACKEND_STRING}/user/changeRoomName`, {
+            const response = await axios.put(`${backendString}/user/changeRoomName`, {
                 roomID: p,
                 roomName: q,
                 username: r,
@@ -566,7 +568,7 @@ const ProfileUpModal = () => {
                 ...upForm,
                 userpfp: urlRef.current
             }
-            const response = await axios.put(`${process.env.BACKEND_STRING}/user/updatePfp`, payload, {
+            const response = await axios.put(`${backendString}/user/updatePfp`, payload, {
                 headers: {
                     Authorization: `${token}`,
                     "Content-Type": "application/json",

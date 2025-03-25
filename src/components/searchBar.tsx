@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import { inputValueState, searchRecState } from "../atoms";
+import { backendString } from "@/variables";
 
 const Search = () => {
     const [searchRec, setSearchRec] = useRecoilState(searchRecState); 
@@ -13,7 +14,7 @@ const Search = () => {
         }
 
         try {
-            const response = await axios.get(`${process.env.BACKEND_STRING}/user/search?username=${value}`);
+            const response = await axios.get(`${backendString}/user/search?username=${value}`);
             setSearchRec(response.data); 
         } catch (error) {
             console.error("Error fetching users:", error);

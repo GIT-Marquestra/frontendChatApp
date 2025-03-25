@@ -11,6 +11,7 @@ import { Input } from "../components/ui/input";
 import { cn } from "@/lib/utils";
 import AcUnitIcon from '@mui/icons-material/AcUnit';
 import { motion } from 'framer-motion';
+import { backendString } from '@/variables';
 
 
 function Home() {
@@ -83,7 +84,7 @@ function SignupFormDemo() {
     e.preventDefault();
     if (signUpFormData) {
       try {
-        const response = await axios.post(`${process.env.BACKEND_STRING}/user/signup`, signUpFormData);
+        const response = await axios.post(`${backendString}/user/signup`, signUpFormData);
         if (response.status === 201) {
           toast.success("User Signed Up", {
             position: "bottom-right",
@@ -121,7 +122,7 @@ function SignupFormDemo() {
     
     if (signInFormData) {
       try {
-        const response = await axios.post(`${process.env.BACKEND_STRING}/user/signin`, signInFormData);
+        const response = await axios.post(`${backendString}/user/signin`, signInFormData);
         console.log("Response", response);
         
         if (response.data.message === "Incorrect Credentials!") {
