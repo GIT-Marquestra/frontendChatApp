@@ -1,6 +1,5 @@
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil"
-import { callGetFuncState, chatsLoadingState, createRoomDyn, finalRoomNameState, groupArr, imageState, imgPrevState, imgURLstate, inputValueState, isSignedInState, isSignedUpState, isUploadingState, messToSendState, myChatsState, noChatsOverlayState, placeholderEmailState, placeholderPasswordState, placeholderUsernameState, roomForMessagesState, roomIDstate, roomNameState, sendReRenderState, showNavState, showNewChatNoteState, showRoomNameChangeModalState, tokenState, typeVisState, updateProfileState, upformState, userpfpState, webSocketState } from "../atoms"
-import { useNavigate } from "react-router-dom"
+import { callGetFuncState, chatsLoadingState, createRoomDyn, finalRoomNameState, groupArr, imageState, imgPrevState, imgURLstate, inputValueState, isSignedInState, isSignedUpState, isUploadingState, myChatsState, noChatsOverlayState, placeholderEmailState, placeholderPasswordState, placeholderUsernameState, roomForMessagesState, roomIDstate, roomNameState, showNewChatNoteState, showRoomNameChangeModalState, tokenState, typeVisState, updateProfileState, upformState, userpfpState } from "../atoms"
 import Search from "../components/searchBar"
 import { GetMessages } from "../components/getMessages"
 import { useWebSocket } from "../hooks/webSocket"
@@ -15,13 +14,9 @@ import { motion } from 'framer-motion';
 import { Avatar } from "@mui/material"
 
 const Chat = () => {
-    const setShowNav = useSetRecoilState(showNavState)
-    const navigate = useNavigate()
     const setShowNewChat = useSetRecoilState(showNewChatNoteState)
-    const [messToSend, setMessToSend] = useRecoilState(messToSendState)
     const token = useRecoilValue(tokenState)
     const roomIDforMessage = useRecoilValue(roomForMessagesState)
-    const setReRender = useSetRecoilState(sendReRenderState)
     const [image, setImage] = useRecoilState(imageState)
     const [imgUrl, setImgUrl] = useRecoilState(imgURLstate)
     const setIsUploading = useSetRecoilState(isUploadingState)
@@ -31,15 +26,11 @@ const Chat = () => {
     const isSignedIn = useRecoilValue(isSignedInState);
     const isSignedUp = useRecoilValue(isSignedUpState);
     const userpfp = useRecoilValue(userpfpState);
-    const callGetFunc = useRecoilValue(callGetFuncState)
     const setMyChats = useSetRecoilState(myChatsState);
     const setNoChatsOverlay = useSetRecoilState(noChatsOverlayState)
-    const socket = useRecoilValue(webSocketState)
     const [createRoom, setCreateRoom] = useRecoilState(createRoomDyn)
-    const { sendNothing } = useWebSocket();
     const typeVis = useRecoilValue(typeVisState)
     const fileRef = useRef<HTMLInputElement | null>()
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const setChatsLoading = useSetRecoilState(chatsLoadingState)
     const [scale, setScale] = useState(1);
     const { sendMessage } = useWebSocket()
@@ -48,11 +39,6 @@ const Chat = () => {
     const setUpdateProfile = useSetRecoilState(updateProfileState)
     const inputRef = useRef();
     const setShowRoomNameChangeModal = useSetRecoilState(showRoomNameChangeModalState)
-    const userPfp = useRecoilValue(userpfpState)
-    const showNavbar = () => {
-        setShowNav(true)
-        navigate("/")
-    }
 
     
 
@@ -154,9 +140,7 @@ const Chat = () => {
             getMyChatsFunc()
             setCreateRoom(false)
         }
-        
-
-        setIsMenuOpen(false);
+    
     }
 
     useEffect(() => {

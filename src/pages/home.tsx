@@ -19,7 +19,6 @@ import { motion } from 'framer-motion';
 
 
 function Home() {
-  const isSignedIn = useRecoilValue(isSignedInState)
   return (
     <div className=' w-[100vw] h-screen flex bg-black'>
       <div className='w-1/2 flex items-center'>
@@ -43,13 +42,11 @@ function SignupFormDemo() {
   const [signUpFormData, setSignUpFormData] = useRecoilState(signUpFormDataState);
   const [signInFormData, setSignInFormData] = useRecoilState(signInFormDataState);
   const setIsSignedIn = useSetRecoilState(isSignedInState);
-  const isSignedIn = useRecoilValue(isSignedInState)
   const [checkVar, setCheckVar] = useRecoilState(checkVarState);
   const setNameOfUser = useSetRecoilState(nameOfUserState);
   const navigate = useNavigate();
   const [inup, setInup] = useRecoilState(inUpState);
   const setUsername = useSetRecoilState(placeholderUsernameState);
-  const username = useRecoilValue(placeholderUsernameState)
   const setEmail = useSetRecoilState(placeholderEmailState);
   const setPassword = useSetRecoilState(placeholderPasswordState);
   const setUserpfp = useSetRecoilState(userpfpState);

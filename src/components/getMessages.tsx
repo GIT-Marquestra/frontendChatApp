@@ -1,15 +1,9 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
-    callGetFuncState,
     messageLoading,
     messagesState,
-    noMessage,
     placeholderUsernameState,
-    reRender2State,
     roomForMessagesState,
-    roomMessState,
-    sendReRenderState,
-    tempChatState,
     tokenState,
     userpfpState,
 } from "../atoms";
@@ -19,16 +13,10 @@ import { useEffect, useRef } from "react";
 import { Avatar } from "@mui/material";
 
 export const GetMessages = () => {
-    const [roomForMessages, setRoomForMessages] = useRecoilState(roomForMessagesState);
+    const roomForMessages = useRecoilValue(roomForMessagesState);
     const token = useRecoilValue(tokenState);
-    const [callGetFunc, setCallGetFunc] = useRecoilState(callGetFuncState);
-    const [roomMess, setRoomMess] = useRecoilState(roomMessState);
     const userpfp = useRecoilValue(userpfpState)
     const username = useRecoilValue(placeholderUsernameState);
-    const [reRender, setReRender] = useRecoilState(sendReRenderState);
-    const temp = useRecoilValue(tempChatState);
-    const no = useRecoilValue(noMessage);
-    const [reRender2, setReRender2] = useRecoilState(reRender2State);
     const [messages, setMessages] = useRecoilState(messagesState);
     const [messLoading, setMessLoading] = useRecoilState(messageLoading);
     const chatEndRef = useRef<HTMLDivElement | null>(null);
