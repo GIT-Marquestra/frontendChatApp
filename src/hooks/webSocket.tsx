@@ -1,5 +1,5 @@
 import { useRecoilState, useRecoilValue } from "recoil"
-import { activeRoomState, imgURLstate, messagesState, placeholderUsernameState } from "../atoms"
+import { activeRoomState, messagesState, placeholderUsernameState } from "../atoms"
 import { useEffect, useRef } from "react"
 import { wsString } from "../backendString"
 
@@ -24,8 +24,6 @@ export const useWebSocket = () => {
 
         socket.onmessage = (me: any) => {
             const m = JSON.parse(me.data)
-            console.log(me.data)
-            console.log("JKLMN")
             const { type, payload, messageObject } = m;
             const { roomID, text } = payload
             console.log("Type: ", type)
@@ -39,7 +37,7 @@ export const useWebSocket = () => {
                 setActiveRoom(roomID)
             }
             if(type === "chat"){
-                // @ts-ignore
+                //@ts-expect-error: do not know what to do 
                 setMessages((prev)=>[...prev, messageObject]) // messages will be an array of messageObject
                 
             }
@@ -52,7 +50,6 @@ export const useWebSocket = () => {
     }, [activeRoom, setActiveRoom, setMessages])
     
     const createRoom = (roomID: string, targetUser: string[]) => {
-        console.log("Yassu di balle, in createRoom function")
         if(socketRef.current?.readyState === WebSocket.OPEN){
             socketRef.current.send(JSON.stringify({
                 type: "startChat",
@@ -73,17 +70,6 @@ export const useWebSocket = () => {
                     message: message, 
                     imgUrl: imgUrl,
                     roomID: roomID,
-                    username: username
-                }
-            }))
-        }
-    }
-
-    const getOnline = () => {
-        if(socketRef.current?.readyState === WebSocket.OPEN){
-            socketRef.current.send(JSON.stringify({
-                type: "online",
-                payload: {
                     username: username
                 }
             }))
