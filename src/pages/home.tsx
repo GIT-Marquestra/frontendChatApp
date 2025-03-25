@@ -14,10 +14,6 @@ import AcUnitIcon from '@mui/icons-material/AcUnit';
 import { motion } from 'framer-motion';
 
 
-
-
-
-
 function Home() {
   return (
     <div className=' w-[100vw] h-screen flex bg-black'>
