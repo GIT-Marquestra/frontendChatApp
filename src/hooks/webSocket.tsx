@@ -1,7 +1,6 @@
 import { useRecoilState, useRecoilValue } from "recoil"
 import { activeRoomState, messagesState, placeholderUsernameState } from "../atoms"
 import { useEffect, useRef } from "react"
-import { wsString } from "../backendString"
 
 export const useWebSocket = () => {
     const [messages, setMessages] = useRecoilState(messagesState)
@@ -9,7 +8,7 @@ export const useWebSocket = () => {
     const username = useRecoilValue(placeholderUsernameState)
     const socketRef = useRef<WebSocket | null>(null)
     useEffect(() => {
-        const socket = new WebSocket(`${wsString}`)
+        const socket = new WebSocket(`${process.env.WS_STRING}`)
         socketRef.current = socket
 
         socket.onopen = () => {
